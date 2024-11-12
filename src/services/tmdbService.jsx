@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_KEY = 'dedd52875c3bee8da75e4103c138ab51';
+const API_KEY = 'REACT_APP_TMDB_API_KEY';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 // Función para obtener los géneros
