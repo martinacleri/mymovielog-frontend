@@ -11,12 +11,12 @@ function RegisterPage() {
         e.preventDefault();
         
         try {
-            const response = await fetch('http://localhost:3000/api/users', {
+            const response = await fetch(`http://localhost:3000/api/users/newUser`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password, email })
+                body: JSON.stringify({ username, email, password })
             });
 
             if (response.ok) {
@@ -32,10 +32,10 @@ function RegisterPage() {
 
     return (
         <div>
-            <h2>Register</h2>
+            <h2>Registrarse</h2>
             <form onSubmit={handleRegister}>
                 <div>
-                    <label>Username:</label>
+                    <label>Nombre de Usuario: </label>
                     <input
                         type="text"
                         value={username}
@@ -44,7 +44,7 @@ function RegisterPage() {
                     />
                 </div>
                 <div>
-                    <label>Email:</label>
+                    <label>Correo electrónico: </label>
                     <input
                         type="email"
                         value={email}
@@ -53,7 +53,7 @@ function RegisterPage() {
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>Contraseña: </label>
                     <input
                         type="password"
                         value={password}

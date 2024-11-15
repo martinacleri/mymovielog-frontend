@@ -1,10 +1,10 @@
 import axios from "axios";
-const API_KEY = 'REACT_APP_TMDB_API_KEY';
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 // Función para obtener los géneros
 export const getGenres = async () => {
-  const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`);
+  const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=es-ES`);
   const data = await response.json();
   return data.genres; // Devuelve un array de objetos con id y nombre del género
 };
@@ -59,6 +59,18 @@ export const addToWatchlist = async (movie) => {
   }
 
   const response = await axios.post(`http://localhost:3000/api/movies/${movie.id}/addToWatchlist`, {movie},
+  {headers: {Authorization: `Bearer ${token}`}});
+  return response.data;
+};
+
+export const addLog = async (movie, review, rating) => {
+  const token = localStorage.getItem('authToken');
+
+  if(!token) {
+    throw new Error("Token de autenticación no encontrado. Por favor, inicia sesión.");
+  }
+
+  const response = await axios.post(`http://localhost:3000/api/movies/${movie.id}/addLog`, {movie, review, rating},
   {headers: {Authorization: `Bearer ${token}`}});
   return response.data;
 };

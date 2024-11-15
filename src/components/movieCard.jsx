@@ -10,9 +10,9 @@ function MovieCard({ movie, onReview }) {
             <div>
                 <h4>{movie.title}</h4>
                 <p>{movie.genre || "Género desconocido"}</p>
-                <p>{movie.release_date}</p>
+                <p>Fecha de estreno: {movie.release_date}</p>
                 <button onClick={() => onReview(movie)}>
-                    Reseñar
+                    Ver Más Tarde
                 </button>
             </div>
         </div>
