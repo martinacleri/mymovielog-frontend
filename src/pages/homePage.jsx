@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import MovieCard from '../components/movieCard';
-import { searchMovies } from '../services/tmdbService';
+import { searchMovies, addToWatchlist } from '../services/tmdbService';
 import Sidebar from '../components/sideBar';
+import AddLogModal from '../components/addLogModal';
+import { useAuthContext } from '../context/authContext';
 
 function MovieSearch() {
     const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
-    const navigate = useNavigate();
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const { user } = useAuthContext();
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -28,9 +32,29 @@ function MovieSearch() {
         setQuery(e.target.value);
     };
 
-    const handleReview = (movie) => {
-        navigate(`/review/${movie.id}`);
-    };
+    const handleAddToWatchlist = async (movie) => {
+        try {
+          if (user) {
+            await addToWatchlist(movie);
+            alert('Película agregada a Ver Más Tarde.');
+          } else {
+            alert('Por favor, inicia sesión para guardar películas.');
+          }
+        } catch (error) {
+          console.error("Error al agregar a la lista de espera:", error);
+          alert('Hubo un error al agregar la película. Intenta de nuevo más tarde.');
+        }
+      };
+
+      const handleOpenModal = (movie) => {
+        setSelectedMovie(movie);
+        setOpenModal(true);
+      };
+    
+      const handleCloseModal = () => {
+        setOpenModal(false);
+        setSelectedMovie(null);
+      };
 
     return (
         <div>
@@ -53,13 +77,20 @@ function MovieSearch() {
                         <MovieCard 
                             key={movie.id} 
                             movie={movie} 
-                            onReview={handleReview} 
+                            onAddToWatchlist={handleAddToWatchlist}
+                            onAddLog={() => handleOpenModal(movie)} 
                         />
                     ))
                 ) : (
                     hasSearched && <p>No se encontraron películas</p>
                 )}
             </div>
+            {selectedMovie && (
+                <AddLogModal
+                movie={selectedMovie}
+                open={openModal}
+                onClose={handleCloseModal}/>
+            )}
         </div>
     );
 }

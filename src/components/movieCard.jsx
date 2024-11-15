@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MovieCard({ movie, onReview }) {
+function MovieCard({ movie, onAddToWatchlist, onAddLog }) {
     return (
         <div>
             <img 
@@ -11,8 +11,11 @@ function MovieCard({ movie, onReview }) {
                 <h4>{movie.title}</h4>
                 <p>{movie.genre || "Género desconocido"}</p>
                 <p>Fecha de estreno: {movie.release_date}</p>
-                <button onClick={() => onReview(movie)}>
+                <button onClick={() => onAddToWatchlist(movie)}>
                     Ver Más Tarde
+                </button>
+                <button onClick={() => onAddLog(movie)}>
+                    Añadir Log
                 </button>
             </div>
         </div>
