@@ -34,8 +34,8 @@ const LogList = () => {
                     <li key={movie.id}>
                         <h3>{movie.title}</h3>
                         <img src={`http://image.tmdb.org/t/p/w200${movie.poster}`} alt={movie.title} />
-                        <p><strong>Reseña: </strong>{movie.log.review}</p>
-                        <p><strong>Calificación: </strong> {movie.log.rating}/5</p>
+                        <p><strong>Tu Reseña: </strong>{movie.log.review}</p>
+                        <p><strong>Tu Calificación: </strong> {movie.log.rating}/5</p>
                     </li>
                 ))}
             </ul>
