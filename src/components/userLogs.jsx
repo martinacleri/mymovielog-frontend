@@ -1,9 +1,11 @@
+import {Button} from '@mui/material';
 import React, {useEffect, useState} from 'react';
-import { getLogs } from '../services/tmdbService';
+import { getLogs, deleteLog } from '../services/tmdbService';
 
 const LogList = () => {
     const [movies, setMovies] = useState([]);
     const [error, setError] = useState(null);
+    const [logs, setLogs] = useState([]);
 
     useEffect(() => {
         const fetchLogs = async () => {
@@ -17,6 +19,16 @@ const LogList = () => {
 
         fetchLogs();
     }, []);
+
+    const handleDeleteLog = async (logId) => {
+        try {
+            await deleteLog(logId);
+            setLogs(logs.filter((movie) => movie.log.id !== logId));
+            alert('Log eliminado con éxito');
+        } catch (err) {
+            setError(err.message);
+        }
+    }
 
     if (error) {
         return <p>Error: {error}</p>;
@@ -36,6 +48,10 @@ const LogList = () => {
                         <img src={`http://image.tmdb.org/t/p/w200${movie.poster}`} alt={movie.title} />
                         <p><strong>Tu Reseña: </strong>{movie.log.review}</p>
                         <p><strong>Tu Calificación: </strong> {movie.log.rating}/5</p>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleDeleteLog(movie.log.id)}>Eliminar Log</Button>
                     </li>
                 ))}
             </ul>
