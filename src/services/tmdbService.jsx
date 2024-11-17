@@ -74,3 +74,31 @@ export const addLog = async (movie, review, rating) => {
   {headers: {Authorization: `Bearer ${token}`}});
   return response.data;
 };
+
+export const getWatchlist = async () => {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    throw new Error("Token de autenticación no encontrado. Por favor, inicia sesión.");
+  }
+
+  const response = await axios.get(`http://localhost:3000/api/watchlists/getWatchlist`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+
+  return response.data;
+}
+
+export const getLogs = async () => {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    throw new Error("Token de autenticación no encontrado. Por favor, inicia sesión.");
+  }
+
+  const response = await axios.get(`http://localhost:3000/api/logs/getLogs`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+
+  return response.data;
+}

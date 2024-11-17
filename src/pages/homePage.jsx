@@ -62,7 +62,7 @@ function MovieSearch() {
                 <nav>
                     <Link to="/">Buscar Películas</Link>
                     <Link to="/watchlist">Ver Más Tarde</Link>
-                    <Link to="/viewed">Mis Logs</Link>
+                    <Link to="/logs">Mis Logs</Link>
                 </nav>
             <div>
                 <input 

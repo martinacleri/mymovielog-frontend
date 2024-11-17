@@ -22,7 +22,7 @@ function AddLogModal({movie, open, onClose}) {
       <Modal open={open} onClose={onClose}>
         <Box sx={{width: 400, bgcolor: 'background.paper', p: 4, m: 'auto', mt: '10%', borderRadius: 2}}>
           <Typography variant="h6" component="h2" gutterBottom>
-            Añadir Log para {movie.name}
+            Añadir Log para {movie.title}
           </Typography>
           <TextField
             label="Reseña"
