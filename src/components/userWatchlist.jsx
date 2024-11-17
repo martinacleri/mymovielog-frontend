@@ -1,6 +1,6 @@
 import {Button} from '@mui/material';
 import React, {useEffect, useState} from 'react';
-import { getWatchlist } from '../services/tmdbService';
+import { getWatchlist, removeFromWatchlist } from '../services/tmdbService';
 import AddLogModal from './addLogModal';
 
 const WatchlistList = () => {
@@ -40,6 +40,15 @@ const WatchlistList = () => {
         setSelectedMovie(null);
       }
 
+    const handleRemoveFromWatchlist = async (movieId) => {
+        try {
+            await removeFromWatchlist(movieId);
+            setMovies(movies.filter((movie) => movie.id !== movieId));
+        } catch (error) {
+            console.error("Error al eliminar de ver más tarde:", error);
+        }
+    }
+
     return (
         <div>
             <h1>Tus Películas Para Ver Más Tarde</h1>
@@ -53,6 +62,12 @@ const WatchlistList = () => {
                             color="primary"
                             onClick={() => handleOpenModal(movie)}
                         > Añadir Log
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleRemoveFromWatchlist(movie.id)}
+                        > Eliminar de Ver Más Tarde
                         </Button>
                     </li>
                 ))}

@@ -102,3 +102,17 @@ export const getLogs = async () => {
 
   return response.data;
 }
+
+export const removeFromWatchlist = async (movieId) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error("Token de autenticación no encontrado. Por favor, inicia sesión.");
+  }
+
+  const response = await axios.delete(`http://localhost:3000/api/watchlists/removeFromWatchlist`, {
+    headers: {Authorization: `Bearer ${token}`},
+    data: {movieId},
+  });
+
+  return response.data;
+}
