@@ -16,12 +16,13 @@ export const searchMovies = async (query) => {
     genreMap[genre.id] = genre.name;
   });
 
-  const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`);
+  const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=es-ES`);
   const data = await response.json();
 
   const moviesWithGenres = data.results.map(movie => ({
     ...movie,
-    genre: movie.genre_ids.map(id => genreMap[id]).join(', ')
+    genre: movie.genre_ids.map(id => genreMap[id]).join(', '),
+    genre_ids: movie.genre_ids
   }));
 
   return { results: moviesWithGenres };
@@ -36,7 +37,7 @@ export const getPopularMovies = async () => {
     genreMap[genre.id] = genre.name;
   });
 
-  const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
+  const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES`);
   const data = await response.json();
 
   const moviesWithGenres = data.results.map(movie => ({
@@ -45,7 +46,8 @@ export const getPopularMovies = async () => {
     releaseDate: movie.release_date,
     poster: movie.poster_path,
     synopsis: movie.overview,
-    genre: movie.genre_ids.map(id => genreMap[id]).join(', ')
+    genre: movie.genre_ids.map(id => genreMap[id]).join(', '),
+    genre_ids: movie.genre_ids
   }));
 
   return { results: moviesWithGenres };
@@ -75,7 +77,7 @@ export const addLog = async (movie, review, rating) => {
   return response.data;
 };
 
-export const getWatchlist = async () => {
+export const getWatchlist = async (genreId = '') => {
   const token = localStorage.getItem('authToken');
 
   if (!token) {
@@ -84,12 +86,21 @@ export const getWatchlist = async () => {
 
   const response = await axios.get(`http://localhost:3000/api/watchlists/getWatchlist`, {
     headers: {Authorization: `Bearer ${token}`},
+    params: {genreId},
   });
 
   return response.data;
-}
+};
 
-export const getLogs = async () => {
+export const getDBGenres = async() => {
+  const token = localStorage.getItem('authToken');
+  const response = await axios.get(`http://localhost:3000/api/genres/getGenres`, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+  return response.data;
+};
+
+export const getLogs = async (genreId = '') => {
   const token = localStorage.getItem('authToken');
 
   if (!token) {
@@ -98,6 +109,7 @@ export const getLogs = async () => {
 
   const response = await axios.get(`http://localhost:3000/api/logs/getLogs`, {
     headers: {Authorization: `Bearer ${token}`},
+    params: {genreId},
   });
 
   return response.data;
